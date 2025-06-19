@@ -17,11 +17,13 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import { globalStyles, colors } from '../styles/globalStyles';
 import { estoqueStyles } from '../styles/estoqueStyles';
+import RelatorioModal from '../utils/RelatorioModal'; // Importar o novo componente
 
 const EstoqueScreen = () => {
   const [produtos, setProdutos] = useState([]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showRelatorioModal, setShowRelatorioModal] = useState(false); // Novo estado
   const [editingProduct, setEditingProduct] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -278,6 +280,13 @@ const EstoqueScreen = () => {
         <TouchableOpacity style={globalStyles.refreshButton} onPress={handleRefresh}>
           <Ionicons name="refresh" size={24} color="#4CAF50" />
         </TouchableOpacity>
+        {/* Novo botão de relatório */}
+        <TouchableOpacity 
+          style={[globalStyles.refreshButton, { marginLeft: 8 }]} 
+          onPress={() => setShowRelatorioModal(true)}
+        >
+          <Ionicons name="document-text" size={24} color="#4CAF50" />
+        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -306,6 +315,13 @@ const EstoqueScreen = () => {
       <TouchableOpacity style={globalStyles.fab} onPress={openModal}>
         <Ionicons name="add" size={24} color="#fff" />
       </TouchableOpacity>
+
+      {/* Modal de Relatório */}
+      <RelatorioModal
+        visible={showRelatorioModal}
+        onClose={() => setShowRelatorioModal(false)}
+        produtos={produtos}
+      />
 
       <Modal
         isVisible={showModal}
